@@ -1,0 +1,101 @@
+---
+title: "EXPONENTIAL DISTRIBUTION AND ITS COMPARISON WITH CENTRAL LIMIT THEOREM"
+author: "MALLESH SUBRAMANI M"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+##Overview
+This paper concerns with the study of exponential distribution , which is a continous probabality density function.We are mainly concerned with the fitness of the theoretical and experimental values of the exponential distribution.Also the verification of central limit theorem for large number of samples has been performed.
+
+##Simulation
+The exponential distribution is the probability distribution that describes the time between events in a Poisson point process.
+
+```{r exp,echo=TRUE}
+exp40_ <- rexp(n=40,rate=0.2) #generating 40 random exp distribution values
+exp40_
+```
+      
+    The above data set represents the random generated values from the rexp function, rexp is a predefined function in R, which is used to generate random required values of exponential distribution.It takes in two values, that is "n" which is the required number of samples and "rate" is the lambda value. The above expression "exp40_"contains 40 random exponential distribution values.
+
+```{r exp1,echo=TRUE}
+mean40 <- mean(exp40_)      #finding the mean of the obtained 40 values
+mean40
+```
+      
+
+```{r exp2,echo=TRUE}
+lambda <- rate <- 0.2       #setting the lambda value
+mean_th <- 1/rate           #calculating the theoritical mean values 
+mean_th
+mean_th-mean40              #comparing the obtained mean values
+```
+
+    mean_th is the theoritical mean and mean40 is the experimental mean of the random samples obtained.
+    
+    Therefore it can be seen that theoritical mean is approximately equal to the experimental mean for less number of samples.
+    
+```{r exp3,echo=FALSE}
+std40 <- sd(exp40_)
+std40
+```
+```{r exp4,echo=TRUE}
+var40 <- std40*std40        #std40 is the experimentally obtained standard deviation
+var40
+```
+
+```{r exp5,echo=FALSE}
+std_th <- 1/rate
+#std_th
+```
+```{r exp6,echo=TRUE}
+var_th <- std_th*std_th    #std_th is the theoritically computed standard deviation
+var_th
+var_th-var40               #comparing the obtined variance
+```
+
+    var40 and var_th are the experimentally calculated and theoritical variances
+  
+    Therefore from the above calculations it can be seen that there is a difference in the variance of the samples,as the difference in  variance value increases, the data is spreadout on a larger scale and hence many values are away from mean value, which signifies that the confidience interval is narrow for one particular p value.Therefore the probabality of obtaining expected value is less.
+    
+    Central Limit Theorem: The central limit theorem (CLT) establishes that, in some situations, when independent random variables are added, their properly normalized sum tends toward a normal distribution for large number of samples even if the original variables themselves are not normally distributed.
+
+```{r exp8,echo=FALSE}
+mhist<-hist(exp40_)
+multiples<-mhist$counts/mhist$density
+mydensit<-density(exp40_)
+mydensit$y<-mydensit$y*multiples[1]
+#plot(myhist)
+lines(mydensit)
+abline(v=mean(exp40_),col="red")
+```
+    
+    It can be seen from the above histogram that distribution is not gaussian, because the maximum point is not at the mean value depicted by red line moreover it is not bell shaped.
+```{r exp7,echo=FALSE}
+exp1000_ = NULL
+for (i in 1 : 1000) exp1000_ = c(exp1000_, mean(rexp(40,0.2)))
+#s<-sd(mns)
+myhist<-hist(exp1000_)
+multipl<-myhist$counts/myhist$density
+mydens<-density(exp1000_)
+mydens$y<-mydens$y*multipl[1]
+#plot(myhist)
+lines(mydens)
+abline(v=mean(exp1000_),col="red")
+
+
+```
+    
+    It can be seen from the above histogram that distribution is gaussian, because the maximum point is at the mean va-lue depicted by red line, and also it is bell shaped.
+
+```{r exp10,comment="mean",echo=FALSE}
+mean(exp1000_)
+```
+    
+    The mean is almost equal to the calculated mean.Hence the obtained data set can be approximated to that of a normal distribution,as the number of samples increases,that is tends to infinity the obtained mean will exactly be equal to theoritical mean.
+
+##Result
+From the above computation and experimentation we can conclude that the theoritical and experimental values are approximately equal.Central Limit Theorem is verified for larger data samples,hence large data sets can be approximated as a normal distribution.
